@@ -30,31 +30,62 @@ body {
     img:hover {
       transform: scale(1.05);
     }
+
+    #texto {
+      margin-top: 20px;
+      font-size: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      text-align: center;
+    }
+
+    #texto.mostrar {
+      opacity: 1;
+      }
   </style>
 </head>
 <body>
   <img src="./assets/img/imagen.png" alt="Imagen central" id="imagen" />
-
+  <div id="texto"></div>
   <script>
-    const sonidos = [
-      'assets/sonidos/sonido1.mp3',
-      'assets/sonidos/sonido2.mp3',
-      'assets/sonidos/sonido3.mp3',
-      'assets/sonidos/sonido4.mp3',
-      'assets/sonidos/sonido5.mp3'
+ const sonidos = [
+      { src: 'assets/sonidos/sonido1.mp3', texto: 'i luv spending time with you' },
+      { src: 'assets/sonidos/sonido2.mp3', texto: 'will u be my friend?' },
+      { src: 'assets/sonidos/sonido3.mp3', texto: 'spending time with u is special' },
+      { src: 'assets/sonidos/sonido4.mp3', texto: 'i luv you <3' },
+      { src: 'assets/sonidos/sonido5.mp3', texto: 'i need a hug' }
     ];
 
     const imagen = document.getElementById('imagen');
+    const texto = document.getElementById('texto');
     let audioActual = null;
 
     imagen.addEventListener('click', () => {
+      // Animación
+      imagen.classList.add('animar');
+      setTimeout(() => {
+        imagen.classList.remove('animar');
+      }, 200);
+
+      // Detener sonido anterior
       if (audioActual && !audioActual.paused) {
         audioActual.pause();
         audioActual.currentTime = 0;
       }
 
-      const sonidoAleatorio = sonidos[Math.floor(Math.random() * sonidos.length)];
-      audioActual = new Audio(sonidoAleatorio);
+      // Elegir sonido aleatorio
+      const elegido = sonidos[Math.floor(Math.random() * sonidos.length)];
+      audioActual = new Audio(elegido.src);
+
+      // Mostrar texto
+      texto.textContent = elegido.texto;
+      texto.classList.add('mostrar');
+
+      // Ocultar texto cuando termine el sonido
+      audioActual.addEventListener('ended', () => {
+        texto.classList.remove('mostrar');
+      });
+
       audioActual.play();
     });
   </script>
