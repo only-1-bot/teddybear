@@ -17,35 +17,19 @@
       font-family: 'Comic Sans MS', 'Trebuchet MS', sans-serif;
     }
 
-    img {
-      max-width: 300px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    img:hover {
-      transform: scale(1.05);
-    }
-
-#texto {
-  position: relative;
-  background-color: #fff;
-  color: #333;
-  border-radius: 16px;
-  padding: 15px 20px;
-  font-size: 1.4rem;
-  max-width: 80%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  margin-top: -60px; /* Esto lo empuja arriba del osito */
-  margin-bottom: 30px; /* Espacio visual entre texto y borde superior */
-  z-index: 2;
-}
-
-
-    #texto.mostrar {
-      opacity: 1;
+    #texto {
+      position: relative;
+      background-color: #fff;
+      color: #333;
+      border-radius: 16px;
+      padding: 15px 20px;
+      font-size: 1.4rem;
+      max-width: 80%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
     }
 
     #texto::after {
@@ -58,16 +42,24 @@
       border-top-color: #fff;
     }
 
+    #texto.mostrar {
+      opacity: 1;
+    }
+
+    img {
+      max-width: 300px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    img:hover {
+      transform: scale(1.05);
+    }
+
     @keyframes agrandar {
-      0% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.15);
-      }
-      100% {
-        transform: scale(1);
-      }
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
     }
 
     #imagen.animar {
@@ -76,6 +68,8 @@
   </style>
 </head>
 <body>
+
+  <!-- Texto ahora va arriba -->
   <div id="texto"></div>
   <img src="./assets/img/imagen.png" alt="Imagen central" id="imagen" />
 
@@ -97,9 +91,9 @@
       imagen.classList.add('animar');
       setTimeout(() => {
         imagen.classList.remove('animar');
-      }, 300);
+      }, 200);
 
-      // Detener sonido anterior si aún está sonando
+      // Detener sonido anterior
       if (audioActual && !audioActual.paused) {
         audioActual.pause();
         audioActual.currentTime = 0;
@@ -113,13 +107,12 @@
       texto.textContent = elegido.texto;
       texto.classList.add('mostrar');
 
-      // Reproducir audio
-      audioActual.play();
-
       // Ocultar texto cuando termine el sonido
       audioActual.addEventListener('ended', () => {
         texto.classList.remove('mostrar');
       });
+
+      audioActual.play();
     });
   </script>
 </body>
