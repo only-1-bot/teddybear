@@ -56,6 +56,22 @@ body {
   border-top-color: #fff;
 }
 
+    @keyframes agrandar {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#imagen.animar {
+  animation: agrandar 0.3s ease;
+}
+
 
   </style>
 </head>
@@ -103,6 +119,31 @@ body {
 
       audioActual.play();
     });
+
+    const imagen = document.getElementById('imagen');
+
+imagen.addEventListener('click', () => {
+  // Reproducir sonido y mostrar texto (tu código actual)
+  const indice = Math.floor(Math.random() * sonidos.length);
+  const sonido = new Audio(sonidos[indice].src);
+  texto.textContent = sonidos[indice].texto;
+  texto.classList.add("mostrar");
+  sonido.play();
+
+  // 🔄 Agregar clase para animar
+  imagen.classList.add("animar");
+
+  // 🕒 Quitar clase después de que termina la animación
+  setTimeout(() => {
+    imagen.classList.remove("animar");
+  }, 300);
+
+  // Ocultar el texto después de unos segundos
+  setTimeout(() => {
+    texto.classList.remove("mostrar");
+  }, 3000);
+});
+
   </script>
 </body>
 </html>
